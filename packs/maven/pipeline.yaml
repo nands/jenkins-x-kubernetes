@@ -25,7 +25,7 @@ pipelines:
   release:
     build:
       steps:
-      - sh: ./scripts/build.sh
+      - sh: curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.15.0/skaffold-linux-amd64 && chmod +x skaffold && cp skaffold /usr/local/bin && /usr/local/bin/skaffold version
         name: skaffold-version
       - sh: export VERSION=`cat VERSION` && skaffold build -f skaffold.yaml
         name: container-build
