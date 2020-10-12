@@ -5,9 +5,9 @@ pipelines:
   pullRequest:
     build:
       steps:
-      - sh: build.sh
+      - sh: curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.15.0/skaffold-linux-amd64 && chmod +x skaffold && cp skaffold /usr/local/bin && /usr/local/bin/skaffold version
         name: skaffold-version
-      - sh: export VERSION=$PREVIEW_VERSION && skaffold build -f skaffold.yaml
+      - sh: export VERSION=$PREVIEW_VERSION && /usr/local/bin/skaffold build -f skaffold.yaml
         name: container-build
     postBuild:
       steps:
