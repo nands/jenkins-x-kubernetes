@@ -1,10 +1,15 @@
-apiVersion: skaffold/v1beta2
+apiVersion: skaffold/v2beta8
 kind: Config
 build:
   artifacts:
-  - image: REPLACE_ME_DOCKER_REGISTRY_ORG/REPLACE_ME_APP_NAME
+  - image: 1card/user-service
     context: .
-    docker: {}
+    docker:
+      dockerfile: jux-microservices/user-service/DockerFile
+  - image: 1card/merchant-service
+    context: .
+    docker:
+      dockerfile: jux-microservices/merchant-service/DockerFile
   tagPolicy:
     envTemplate:
       template: '{{.DOCKER_REGISTRY}}/{{.IMAGE_NAME}}:{{.VERSION}}'
@@ -21,8 +26,13 @@ profiles:
   deploy:
     helm:
       releases:
-      - name: REPLACE_ME_APP_NAME
-        chartPath: charts/REPLACE_ME_APP_NAME
+      - name: user-service 
+        chartPath: jux-microservices/charts/user-service
+        setValueTemplates:
+          image.repository: '{{.DOCKER_REGISTRY}}/{{.IMAGE_NAME}}'
+          image.tag: '{{.DIGEST_HEX}}'
+      - name: merchant-service 
+        chartPath: jux-microservices/charts/merchant-service
         setValueTemplates:
           image.repository: '{{.DOCKER_REGISTRY}}/{{.IMAGE_NAME}}'
           image.tag: '{{.DIGEST_HEX}}'
