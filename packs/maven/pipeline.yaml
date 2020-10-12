@@ -5,7 +5,7 @@ pipelines:
   pullRequest:
     build:
       steps:
-      - sh: scripts/build.sh
+      - sh: build.sh
         name: skaffold-version
       - sh: export VERSION=$PREVIEW_VERSION && skaffold build -f skaffold.yaml
         name: container-build
