@@ -4,12 +4,12 @@ build:
   artifacts:
   - image: 1card/user-service
     context: .
-    docker:
-      dockerfile: jux-microservices/user-service/DockerFile
+    kaniko:
+      dockerfile: jux-microservices/user-service/Dockerfile
   - image: 1card/merchant-service
     context: .
-    docker:
-      dockerfile: jux-microservices/merchant-service/DockerFile
+    kaniko:
+      dockerfile: jux-microservices/merchant-service/Dockerfile
   tagPolicy:
     envTemplate:
       template: '{{.DOCKER_REGISTRY}}/{{.IMAGE_NAME}}:{{.VERSION}}'
