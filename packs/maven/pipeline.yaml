@@ -27,7 +27,7 @@ pipelines:
       steps:
       - sh: curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.15.0/skaffold-linux-amd64 && chmod +x skaffold && cp skaffold /usr/local/bin && /usr/local/bin/skaffold version
         name: skaffold-version
-      - sh: export VERSION=`cat VERSION` && skaffold build -f skaffold.yaml
+      - sh: export VERSION=`cat VERSION` && echo "Building skaffold" && /usr/local/bin/skaffold build -f skaffold.yaml
         name: container-build
       - sh: jx step post build --image $DOCKER_REGISTRY/$ORG/$APP_NAME:\$(cat VERSION)
         name: post-build
