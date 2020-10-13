@@ -33,7 +33,7 @@ pipelines:
         name: post-build
     promote:
       steps:
-      - dir: charts/REPLACE_ME_APP_NAME
+      - dir: charts/user-service
         steps:
         - sh: jx step changelog --version v\$(cat ../../VERSION)
           name: changelog
@@ -43,3 +43,12 @@ pipelines:
         - comment: promote through all 'Auto' promotion Environments
           sh: jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
           name: jx-promote
+      - dir: charts/merchant-service
+        steps:
+        - sh: jx step changelog --version v\$(cat ../../VERSION)
+          name: changelog
+        - comment: release the helm chart
+          sh: jx step helm release
+          name: helm-release
+        - comment: promote through all 'Auto' promotion Environments
+          sh: jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
