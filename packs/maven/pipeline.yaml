@@ -36,19 +36,19 @@ pipelines:
       - dir: charts/user-service
         steps:
         - sh: jx step changelog --version v\$(cat ../../VERSION)
-          name: changelog
+          name: changelog-userservice
         - comment: release the helm chart
           sh: jx step helm release
-          name: helm-release
+          name: helm-release-userservice
         - comment: promote through all 'Auto' promotion Environments
           sh: jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
-          name: jx-promote
+          name: jx-promote-userservice
       - dir: charts/merchant-service
         steps:
         - sh: jx step changelog --version v\$(cat ../../VERSION)
-          name: changelog
+          name: changelog-merchantservice
         - comment: release the helm chart
           sh: jx step helm release
-          name: helm-release
+          name: helm-release-merchantservice
         - comment: promote through all 'Auto' promotion Environments
           sh: jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
