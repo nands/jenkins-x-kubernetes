@@ -38,7 +38,7 @@ pipelines:
         - sh: jx step changelog --version v\$(cat ../../VERSION)
           name: changelog-userservice
         - comment: version the helm chart
-          sh: jx step helm --version \$(cat ../../VERSION)
+          sh: jx step helm version --version \$(cat ../../VERSION)
           name: helm-version-userservice
         - comment: release the helm chart
           sh: jx step helm release
@@ -51,7 +51,7 @@ pipelines:
         - sh: jx step changelog --version v\$(cat ../../VERSION)
           name: changelog-merchantservice
         - comment: version the helm chart
-          sh: jx step helm --version \$(cat ../../VERSION)
+          sh: jx step helm version --version \$(cat ../../VERSION)
           name: helm-version-merchantservice
         - comment: release the helm chart
           sh: jx step helm release
