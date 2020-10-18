@@ -41,7 +41,7 @@ pipelines:
           sh: jx step helm version --version \$(cat ../../VERSION)
           name: helm-version-userservice
         - comment: release the helm chart
-          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx step helm release
+          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx step helm release && helm repo update
           name: helm-release-userservice
         - comment: list the helm chart
           sh: jx step helm list
@@ -60,7 +60,7 @@ pipelines:
           sh: jx step helm version --version \$(cat ../../VERSION)
           name: helm-version-merchantservice
         - comment: release the helm chart
-          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx step helm release
+          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx step helm release && helm repo update
           name: helm-release-merchantservice
         - comment: list the helm chart
           sh: jx step helm list
