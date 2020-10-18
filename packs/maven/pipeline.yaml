@@ -44,7 +44,7 @@ pipelines:
           sh: jx step helm release
           name: helm-release-userservice
         - comment: list the helm chart
-          sh: jx step helm list
+          sh: jx step helm env
           name: helm-list-charts
         - comment: apply the helm chart
           sh: jx step helm install -n user-service -v \$(cat ../../VERSION) jenkins-x-chartmuseum/user-service
@@ -63,7 +63,7 @@ pipelines:
           sh: jx step helm release
           name: helm-release-merchantservice
         - comment: list the helm chart
-          sh: jx step helm list
+          sh: jx step helm env
           name: helm-list-charts-merchant
         - comment: install the helm chart
           sh: jx step helm install -n merchant-service -v \$(cat ../../VERSION) jenkins-x-chartmuseum/merchant-service
