@@ -64,7 +64,7 @@ pipelines:
           name: helm-release-merchantservice
         - comment: list the helm chart
           sh: jx step helm list
-          name: helm-list-charts
+          name: helm-list-charts-merchant
         - comment: install the helm chart
           sh: jx step helm install -n merchant-service -v \$(cat ../../VERSION) jenkins-x-chartmuseum/merchant-service
           name: helm-install-merchantservice
