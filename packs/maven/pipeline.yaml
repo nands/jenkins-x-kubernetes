@@ -27,7 +27,7 @@ pipelines:
       steps:
       - sh: curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.15.0/skaffold-linux-amd64 && chmod +x skaffold && cp skaffold /usr/local/bin && /usr/local/bin/skaffold version
         name: skaffold-version
-      - sh: export VERSION=`cat VERSION` && echo "Building with updated skaffold" && curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.15.0/skaffold-linux-amd64 && chmod +x skaffold && pwd && ls -lR charts && ./skaffold build -f skaffold.yaml
+      - sh: export VERSION=`cat VERSION` && echo "Building with updated skaffold" && curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.15.0/skaffold-linux-amd64 && chmod +x skaffold && pwd && ./skaffold build -f skaffold.yaml
         name: container-build
       - sh: jx step post build --image $DOCKER_REGISTRY/$ORG/$APP_NAME:\$(cat VERSION)
         name: post-build
@@ -43,6 +43,9 @@ pipelines:
         - comment: release the helm chart
           sh: jx step helm release
           name: helm-release-userservice
+        - comment: list the helm chart
+          sh: jx step helm list
+          name: helm-list-charts
         - comment: apply the helm chart
           sh: jx step helm install -n user-service -v \$(cat ../../VERSION) jenkins-x-chartmuseum/user-service
           name: helm-install-userservice
@@ -59,6 +62,9 @@ pipelines:
         - comment: release the helm chart
           sh: jx step helm release
           name: helm-release-merchantservice
+        - comment: list the helm chart
+          sh: jx step helm list
+          name: helm-list-charts
         - comment: install the helm chart
           sh: jx step helm install -n merchant-service -v \$(cat ../../VERSION) jenkins-x-chartmuseum/merchant-service
           name: helm-install-merchantservice
