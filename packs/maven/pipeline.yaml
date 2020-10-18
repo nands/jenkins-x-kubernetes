@@ -43,6 +43,9 @@ pipelines:
         - comment: release the helm chart
           sh: jx step helm release
           name: helm-release-userservice
+        - comment: install the helm chart
+          sh: jx step helm install
+          name: helm-install-userservice
         - comment: promote through all 'Auto' promotion Environments
           sh: jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
           name: jx-promote-userservice
@@ -56,6 +59,9 @@ pipelines:
         - comment: release the helm chart
           sh: jx step helm release
           name: helm-release-merchantservice
+        - comment: install the helm chart
+          sh: jx step helm install
+          name: helm-install-merchantservice
         - comment: promote through all 'Auto' promotion Environments
           sh: jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
           name: jx-promote-merchantservice
