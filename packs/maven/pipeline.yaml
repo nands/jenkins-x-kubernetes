@@ -19,7 +19,7 @@ pipelines:
         steps:
         - sh: make preview
           name: make-preview
-        - sh: jx preview --app $APP_NAME --dir ../..
+        - sh: echo user-values-pre-preview && cat charts/user-service/values.yaml && echo merchant-values-pre-preview && cat charts/merchant-service/values.yaml && jx preview --app $APP_NAME --dir ../..
           name: jx-preview
 
   release:
