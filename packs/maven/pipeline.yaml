@@ -50,7 +50,7 @@ pipelines:
           sh: jx step helm install -n user-service -v \$(cat ../../VERSION) chartmuseum-jx.juxapp.co.uk/user-service
           name: helm-install-userservice
         - comment: promote through all 'Auto' promotion Environments
-          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
+          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx promote -a user-service -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
           name: jx-promote-userservice
       - dir: charts/merchant-service
         steps:
@@ -69,5 +69,5 @@ pipelines:
           sh: jx step helm install -n merchant-service -v \$(cat ../../VERSION) chartmuseum-jx.juxapp.co.uk/merchant-service
           name: helm-install-merchantservice
         - comment: promote through all 'Auto' promotion Environments
-          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
+          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx promote -a merchant-service -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
           name: jx-promote-merchantservice
