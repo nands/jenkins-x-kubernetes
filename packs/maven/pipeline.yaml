@@ -35,13 +35,13 @@ pipelines:
       steps:
       - dir: charts/user-service
         steps:
-        - sh: jx step changelog --version v\$(cat ../../VERSION)
+        - sh: cat values.yaml && jx step changelog --version v\$(cat ../../VERSION)
           name: changelog-userservice
         - comment: version the helm chart
-          sh: jx step helm version --version \$(cat ../../VERSION)
+          sh: cat values.yaml && jx step helm version --version \$(cat ../../VERSION)
           name: helm-version-userservice
         - comment: release the helm chart
-          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx step helm release && helm repo update
+          sh: cat values.yaml && export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx step helm release && helm repo update
           name: helm-release-userservice
         - comment: list the helm chart
           sh: jx step helm list
