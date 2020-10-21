@@ -25,7 +25,7 @@ pipelines:
   release:
     build:
       steps:
-      - sh: export VERSION=`cat VERSION` && jx step tag -d user-service -v $VERSION -r $DOCKER_REGISTRY/$ORG/user-service && jx step tag -d merchant-service -v $VERSION -r $DOCKER_REGISTRY/$ORG/merchant-service && curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.15.0/skaffold-linux-amd64 && chmod +x skaffold && cp skaffold /usr/local/bin && /usr/local/bin/skaffold version
+      - sh: export VERSION=`cat VERSION` && git push --delete origin v$VERSION && jx step tag -d user-service -v $VERSION -r $DOCKER_REGISTRY/$ORG/user-service && git push --delete origin v$VERSION && jx step tag -d merchant-service -v $VERSION -r $DOCKER_REGISTRY/$ORG/merchant-service && curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.15.0/skaffold-linux-amd64 && chmod +x skaffold && cp skaffold /usr/local/bin && /usr/local/bin/skaffold version
         name: skaffold-version
       - sh: export VERSION=`cat VERSION` && echo "Building with updated skaffold" && curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.15.0/skaffold-linux-amd64 && chmod +x skaffold && pwd && ./skaffold build -f skaffold.yaml
         name: container-build
