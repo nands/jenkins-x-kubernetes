@@ -5,7 +5,7 @@ pipelines:
   pullRequest:
     build:
       steps:
-      - sh: export VERSION=`cat VERSION` && jx step tag -d user-service -v $VERSION -r $DOCKER_REGISTRY/$ORG/user-service && jx step tag -d merchant-service -v $VERSION -r $DOCKER_REGISTRY/$ORG/merchant-service && curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.15.0/skaffold-linux-amd64 && chmod +x skaffold && cp skaffold /usr/local/bin && /usr/local/bin/skaffold version
+      - sh: curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.15.0/skaffold-linux-amd64 && chmod +x skaffold && cp skaffold /usr/local/bin && /usr/local/bin/skaffold version
         name: skaffold-version
       - sh: curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.15.0/skaffold-linux-amd64 && chmod +x skaffold &&  export VERSION=$PREVIEW_VERSION && ./skaffold build -f skaffold.yaml
         name: container-build
@@ -23,9 +23,13 @@ pipelines:
           name: jx-preview
 
   release:
+    setVersion:
+      steps:
+        - name: next-version
+            sh: jx step tag -d user-service -v $VERSION -r $DOCKER_REGISTRY/$ORG/user-service --no-apply && jx step tag -d merchant-service -v $VERSION -r $DOCKER_REGISTRY/$ORG/merchant-service
     build:
       steps:
-      - sh: export VERSION=`cat VERSION` && git tag -d v$VERSION && echo "local tag deleted" && git push origin :refs/tags/v$VERSION && echo "remote tag deleted" && jx step tag -d user-service -v $VERSION -r $DOCKER_REGISTRY/$ORG/user-service && git tag -d v$VERSION && echo "local tag deleted" && git push origin :refs/tags/v$VERSION && echo "remote tag deleted" && jx step tag -d merchant-service -v $VERSION -r $DOCKER_REGISTRY/$ORG/merchant-service && curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.15.0/skaffold-linux-amd64 && chmod +x skaffold && cp skaffold /usr/local/bin && /usr/local/bin/skaffold version
+      - sh: curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.15.0/skaffold-linux-amd64 && chmod +x skaffold && cp skaffold /usr/local/bin && /usr/local/bin/skaffold version
         name: skaffold-version
       - sh: export VERSION=`cat VERSION` && echo "Building with updated skaffold" && curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.15.0/skaffold-linux-amd64 && chmod +x skaffold && pwd && ./skaffold build -f skaffold.yaml
         name: container-build
