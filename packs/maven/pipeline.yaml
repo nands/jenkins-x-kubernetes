@@ -26,6 +26,10 @@ pipelines:
     setVersion:
       replace: true
       steps:
+        - sh: echo \$(jx-release-version) > VERSION
+          name: next-version
+        - sh: mvn versions:set -DnewVersion=\$(cat VERSION)
+          name: set-version
         - sh: export VERSION=`cat VERSION` && jx step tag -d charts/user-service -v $VERSION -r $DOCKER_REGISTRY/$ORG/user-service --no-apply && jx step tag -d charts/merchant-service -v $VERSION -r $DOCKER_REGISTRY/$ORG/merchant-service
           name: tag-version
     build:
