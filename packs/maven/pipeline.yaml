@@ -30,7 +30,7 @@ pipelines:
           name: next-version
         - sh: mvn versions:set -DnewVersion=\$(cat VERSION)
           name: set-version
-        - sh: export VERSION=`cat VERSION` && jx step tag -d charts/user-service -v $VERSION -r $DOCKER_REGISTRY/$ORG/user-service --no-apply && jx step tag -d charts/merchant-service -v $VERSION -r $DOCKER_REGISTRY/$ORG/merchant-service
+        - sh: export VERSION=`cat VERSION` && jx step tag -d charts/user-service -v $VERSION -r 736480167897.dkr.ecr.eu-central-1.amazonaws.com/1card/jux-microservices/user-service --no-apply && jx step tag -d charts/merchant-service -v $VERSION -r 736480167897.dkr.ecr.eu-central-1.amazonaws.com/1card/jux-microservices/merchant-service
           name: tag-version
     build:
       steps:
