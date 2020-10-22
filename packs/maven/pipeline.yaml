@@ -24,6 +24,7 @@ pipelines:
 
   release:
     setVersion:
+      replace: true
       steps:
         - sh: jx step tag -d charts/user-service -v $VERSION -r $DOCKER_REGISTRY/$ORG/user-service --no-apply && jx step tag -d charts/merchant-service -v $VERSION -r $DOCKER_REGISTRY/$ORG/merchant-service
           name: tag-version
