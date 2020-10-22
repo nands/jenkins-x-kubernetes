@@ -25,7 +25,7 @@ pipelines:
   release:
     setVersion:
       steps:
-        - name: next-version
+        - name: tag-version
             sh: jx step tag -d user-service -v $VERSION -r $DOCKER_REGISTRY/$ORG/user-service --no-apply && jx step tag -d merchant-service -v $VERSION -r $DOCKER_REGISTRY/$ORG/merchant-service
     build:
       steps:
