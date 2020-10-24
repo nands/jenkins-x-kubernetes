@@ -44,7 +44,7 @@ pipelines:
       steps:
       - dir: charts/user-service
         steps:
-        - sh: jx step changelog --version v\$(cat ../../VERSION)
+        - sh: jx step changelog -t . --version v\$(cat ../../VERSION)
           name: changelog-userservice
         - comment: version the helm chart
           sh: jx step helm version --version \$(cat ../../VERSION)
@@ -53,7 +53,7 @@ pipelines:
           sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx step helm release && helm repo update
           name: helm-release-userservice
         - comment: promote through all 'Auto' promotion Environments
-          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx promote -a user-service --verbose -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
+          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx promote -a user-service -r jux-jx-charts --verbose -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
           name: jx-promote-userservice
       - dir: charts/merchant-service
         steps:
@@ -66,5 +66,5 @@ pipelines:
           sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx step helm release && helm repo update
           name: helm-release-merchantservice
         - comment: promote through all 'Auto' promotion Environments
-          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx promote -a merchant-service --verbose -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
+          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx promote -a merchant-service -r jux-jx-charts --verbose -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
           name: jx-promote-merchantservice
