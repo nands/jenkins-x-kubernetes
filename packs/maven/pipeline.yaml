@@ -52,12 +52,12 @@ pipelines:
         - comment: release the helm chart
           sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx step helm release && helm repo update
           name: helm-release-userservice
-        - comment: promote through all 'Auto' promotion Environments
-          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx promote -a user-service -r jux-jx-charts --verbose -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
-          name: jx-promote-userservice
         - comment: promote to production Environment
           sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx promote -a user-service -r jux-jx-charts --verbose --env production --timeout 1h --version \$(cat ../../VERSION)
           name: jx-promote-userservice-prod
+        - comment: install the helm chart
+          sh: jx step helm install -n user-service --namespace jx-production -v \$(cat ../../VERSION) chartmuseum-jx.juxapp.co.uk/user-service
+          name: helm-install-userservice
       - dir: charts/merchant-service
         steps:
         - sh: cat values.yaml && jx step changelog --version v\$(cat ../../VERSION)
@@ -68,9 +68,10 @@ pipelines:
         - comment: release the helm chart
           sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx step helm release && helm repo update
           name: helm-release-merchantservice
-        - comment: promote through all 'Auto' promotion Environments
-          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx promote -a merchant-service -r jux-jx-charts --verbose -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
-          name: jx-promote-merchantservice
         - comment: promote to production Environment
           sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx promote -a merchant-service -r jux-jx-charts --verbose --env production --timeout 1h --version \$(cat ../../VERSION)
           name: jx-promote-merchantservice-prod
+        - comment: install the helm chart
+          sh: jx step helm install -n merchant-service -v \$(cat ../../VERSION) chartmuseum-jx.juxapp.co.uk/merchant-service --namespace jx-production
+          name: helm-install-merchantservice
+
