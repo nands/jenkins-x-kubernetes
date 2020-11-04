@@ -11,7 +11,7 @@ pipelines:
         name: container-build
     postBuild:
       steps:
-      - sh: echo user-values-pre-pr-post && cat charts/user-service/values.yaml && echo merchant-values-pre-pr-post && cat charts/merchant-service/values.yaml && jx step post build --image $DOCKER_REGISTRY/$ORG/$APP_NAME:$PREVIEW_VERSION
+      - sh: jx step post build --image $DOCKER_REGISTRY/$ORG/$APP_NAME:$PREVIEW_VERSION
         name: post-build
     promote:
       steps:
@@ -19,7 +19,7 @@ pipelines:
         steps:
         - sh: make preview
           name: make-preview
-        - sh: echo user-values-pre-preview && cat charts/user-service/values.yaml && echo merchant-values-pre-preview && cat charts/merchant-service/values.yaml && jx preview --app $APP_NAME --dir ../..
+        - sh: jx preview --app $APP_NAME --dir ../..
           name: jx-preview
 
   release:
@@ -30,13 +30,13 @@ pipelines:
           name: next-version
         - sh: mvn versions:set -DnewVersion=\$(cat VERSION)
           name: set-version
-        - sh: export VERSION=`cat VERSION` && jx step tag -d charts/user-service -v $VERSION -r 736480167897.dkr.ecr.eu-central-1.amazonaws.com/1card/jux-microservices/user-service --no-apply && jx step tag -d charts/merchant-service -v $VERSION -r 736480167897.dkr.ecr.eu-central-1.amazonaws.com/1card/jux-microservices/merchant-service
+        - sh: jx step tag -d charts/user-service -v $VERSION -r 736480167897.dkr.ecr.eu-central-1.amazonaws.com/1card/jux-microservices/user-service --no-apply && jx step tag -d charts/merchant-service -v $VERSION -r 736480167897.dkr.ecr.eu-central-1.amazonaws.com/1card/jux-microservices/merchant-service
           name: tag-version
     build:
       steps:
       - sh: curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.15.0/skaffold-linux-amd64 && chmod +x skaffold && cp skaffold /usr/local/bin && /usr/local/bin/skaffold version
         name: skaffold-version
-      - sh: export VERSION=`cat VERSION` && echo "Building with updated skaffold" && curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.15.0/skaffold-linux-amd64 && chmod +x skaffold && pwd && ./skaffold build -f skaffold.yaml
+      - sh: curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v1.15.0/skaffold-linux-amd64 && chmod +x skaffold && pwd && ./skaffold build -f skaffold.yaml
         name: container-build
       - sh: jx step post build --image $DOCKER_REGISTRY/$ORG/$APP_NAME:\$(cat VERSION)
         name: post-build
@@ -52,26 +52,20 @@ pipelines:
         - comment: release the helm chart
           sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx step helm release && helm repo update
           name: helm-release-userservice
-        - comment: install the helm chart
-          sh: jx step helm install -n user-service -v \$(cat ../../VERSION) chartmuseum-jx.juxapp.co.uk/user-service --namespace jx-production
-          name: helm-install-userservice
         - comment: promote to production Environment
-          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx promote -a user-service -r jux-jx-charts --verbose --env production --timeout 1h --version \$(cat ../../VERSION)
+          sh: jx promote -r jux-jx-charts --verbose --env production --timeout 1h --version \$(cat ../../VERSION)
           name: jx-promote-userservice-prod
       - dir: charts/merchant-service
         steps:
-        - sh: cat values.yaml && jx step changelog --version v\$(cat ../../VERSION)
+        - sh: jx step changelog --version v\$(cat ../../VERSION)
           name: changelog-merchantservice
         - comment: version the helm chart
-          sh: cat values.yaml && jx step helm version --version \$(cat ../../VERSION)
+          sh: jx step helm version --version \$(cat ../../VERSION)
           name: helm-version-merchantservice
         - comment: release the helm chart
           sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx step helm release && helm repo update
           name: helm-release-merchantservice
         - comment: promote to production Environment
-          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx promote -a merchant-service -r jux-jx-charts --verbose --env production --timeout 1h --version \$(cat ../../VERSION)
+          sh: jx promote -r jux-jx-charts --verbose --env production --timeout 1h --version \$(cat ../../VERSION)
           name: jx-promote-merchantservice-prod
-        - comment: install the helm chart
-          sh: jx step helm install -n merchant-service -v \$(cat ../../VERSION) chartmuseum-jx.juxapp.co.uk/merchant-service --namespace jx-production
-          name: helm-install-merchantservice
 
