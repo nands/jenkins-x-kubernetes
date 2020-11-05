@@ -53,7 +53,7 @@ pipelines:
           sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx step helm release && helm repo update
           name: helm-release-userservice
         - comment: promote to production Environment
-          sh: jx promote -r jux-jx-charts --verbose --env prod --timeout 1h --version \$(cat ../../VERSION)
+          sh: jx promote -r jux-jx-charts --verbose --no-merge --env prod --timeout 1h --version \$(cat ../../VERSION)
           name: jx-promote-userservice-prod
       - dir: charts/merchant-service
         steps:
@@ -66,6 +66,6 @@ pipelines:
           sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx step helm release && helm repo update
           name: helm-release-merchantservice
         - comment: promote to production Environment
-          sh: jx promote -r jux-jx-charts --verbose --env prod --timeout 1h --version \$(cat ../../VERSION)
+          sh: jx promote -r jux-jx-charts --verbose --no-merge --env prod --timeout 1h --version \$(cat ../../VERSION)
           name: jx-promote-merchantservice-prod
 
