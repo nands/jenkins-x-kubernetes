@@ -70,7 +70,7 @@ pipelines:
           name: helm-release-merchantservice
         - comment: promote to development Environment
           sh: jx promote -r jux-jx-charts --verbose --env development --timeout 1h --version \$(cat ../../VERSION)
-          name: jx-promote-userservice-development
+          name: jx-promote-merchantservice-development
         - comment: promote to production Environment
           sh: jx promote -r jux-jx-charts --verbose --no-merge --env prod --timeout 24h --version \$(cat ../../VERSION)
           name: jx-promote-merchantservice-prod
