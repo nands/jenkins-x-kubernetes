@@ -50,7 +50,7 @@ pipelines:
           sh: jx step helm version --version \$(cat ../../VERSION)
           name: helm-version-userservice
         - comment: release the helm chart
-          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && jx step helm release 
+          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && helm init --client-only && jx step helm release 
           name: helm-release-userservice
         - comment: promote to development Environment
           sh: jx promote -r jux-jx-charts --verbose --env development --timeout 1h --version \$(cat ../../VERSION)
@@ -66,7 +66,7 @@ pipelines:
           sh: jx step helm version --version \$(cat ../../VERSION)
           name: helm-version-merchantservice
         - comment: release the helm chart
-          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk &&  jx step helm release 
+          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && helm init --client-only && jx step helm release 
           name: helm-release-merchantservice
         - comment: promote to development Environment
           sh: jx promote -r jux-jx-charts --verbose --env development --timeout 1h --version \$(cat ../../VERSION)
