@@ -50,7 +50,7 @@ pipelines:
           sh: jx step helm version --version \$(cat ../../VERSION)
           name: helm-version-userservice
         - comment: release the helm chart
-          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && which helm && ls -l `which helm` curl -LO https://git.io/get_helm.sh && chmod 700 get_helm.sh && ./get_helm.sh && helm init --client-only && jx step helm release && helm repo update
+          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && curl -fsSL -o /tmp/helm-v2.17.0-linux-amd64.tar.gz https://get.helm.sh/helm-v2.17.0-linux-amd64.tar.gz && tar -xvzf /tmp/helm-v2.17.0-linux-amd64.tar.gz --strip-components=1 -C /usr/bin/ linux-amd64/helm && helm version --client && helm init --client-only && jx step helm release && helm repo update
           name: helm-release-userservice
         - comment: promote to development Environment
           sh: jx promote -r jux-jx-charts --verbose --env development --timeout 1h --version \$(cat ../../VERSION)
@@ -66,7 +66,7 @@ pipelines:
           sh: jx step helm version --version \$(cat ../../VERSION)
           name: helm-version-merchantservice
         - comment: release the helm chart
-          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && curl -LO https://git.io/get_helm.sh && chmod 700 get_helm.sh && ./get_helm.sh && helm init --client-only && jx step helm release && helm repo update
+          sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && curl -fsSL -o /tmp/helm-v2.17.0-linux-amd64.tar.gz https://get.helm.sh/helm-v2.17.0-linux-amd64.tar.gz && tar -xvzf /tmp/helm-v2.17.0-linux-amd64.tar.gz --strip-components=1 -C /usr/bin/ linux-amd64/helm && helm version --client && helm init --client-only && jx step helm release && helm repo update
           name: helm-release-merchantservice
         - comment: promote to development Environment
           sh: jx promote -r jux-jx-charts --verbose --env development --timeout 1h --version \$(cat ../../VERSION)
