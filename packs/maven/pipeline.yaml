@@ -52,12 +52,12 @@ pipelines:
         - comment: release the helm chart
           sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && curl -fsSL -o /tmp/helm-v2.17.0-linux-amd64.tar.gz https://get.helm.sh/helm-v2.17.0-linux-amd64.tar.gz && tar -xvzf /tmp/helm-v2.17.0-linux-amd64.tar.gz --strip-components=1 -C /usr/bin/ linux-amd64/helm && helm version --client && helm init --client-only && jx step helm release && helm repo update
           name: helm-release-userservice
-#        - comment: promote to development Environment
-#          sh: helm init --client-only --stable-repo-url https://charts.helm.sh/stable && jx promote -r jux-jx-charts --verbose --env development --timeout 1h --version \$(cat ../../VERSION)
-#          name: jx-promote-userservice-development
-        - comment: promote to production Environment
-          sh: helm init --client-only --stable-repo-url https://charts.helm.sh/stable && jx promote -r jux-jx-charts --verbose --no-merge --env prod --timeout 24h --version \$(cat ../../VERSION)
-          name: jx-promote-userservice-prod
+        - comment: promote to development Environment
+          sh: helm init --client-only --stable-repo-url https://charts.helm.sh/stable && jx promote -r jux-jx-charts --verbose --env development --timeout 1h --version \$(cat ../../VERSION)
+          name: jx-promote-userservice-development
+#        - comment: promote to production Environment
+#          sh: helm init --client-only --stable-repo-url https://charts.helm.sh/stable && jx promote -r jux-jx-charts --verbose --no-merge --env prod --timeout 24h --version \$(cat ../../VERSION)
+#          name: jx-promote-userservice-prod
       - dir: charts/merchant-service
         steps:
         - sh: jx step changelog --version v\$(cat ../../VERSION)
@@ -68,10 +68,10 @@ pipelines:
         - comment: release the helm chart
           sh: export CHART_REPOSITORY=https://chartmuseum-jx.juxapp.co.uk && curl -fsSL -o /tmp/helm-v2.17.0-linux-amd64.tar.gz https://get.helm.sh/helm-v2.17.0-linux-amd64.tar.gz && tar -xvzf /tmp/helm-v2.17.0-linux-amd64.tar.gz --strip-components=1 -C /usr/bin/ linux-amd64/helm && helm version --client && helm init --client-only && jx step helm release && helm repo update
           name: helm-release-merchantservice
-#        - comment: promote to development Environment
-#          sh: helm init --client-only --stable-repo-url https://charts.helm.sh/stable && jx promote -r jux-jx-charts --verbose --env development --timeout 1h --version \$(cat ../../VERSION)
-#          name: jx-promote-merchantservice-development
-        - comment: promote to production Environment
-          sh: helm init --client-only --stable-repo-url https://charts.helm.sh/stable && jx promote -r jux-jx-charts --verbose --no-merge --env prod --timeout 24h --version \$(cat ../../VERSION)
-          name: jx-promote-merchantservice-prod
+        - comment: promote to development Environment
+          sh: helm init --client-only --stable-repo-url https://charts.helm.sh/stable && jx promote -r jux-jx-charts --verbose --env development --timeout 1h --version \$(cat ../../VERSION)
+          name: jx-promote-merchantservice-development
+#        - comment: promote to production Environment
+#          sh: helm init --client-only --stable-repo-url https://charts.helm.sh/stable && jx promote -r jux-jx-charts --verbose --no-merge --env prod --timeout 24h --version \$(cat ../../VERSION)
+#          name: jx-promote-merchantservice-prod
 
