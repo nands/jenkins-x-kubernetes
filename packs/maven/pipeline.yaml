@@ -55,9 +55,9 @@ pipelines:
         - comment: promote to development Environment
           sh: helm init --client-only --stable-repo-url https://charts.helm.sh/stable && jx promote -r jux-jx-charts --verbose --env development --timeout 1h --version \$(cat ../../VERSION)
           name: jx-promote-userservice-development
-#        - comment: promote to production Environment
-#          sh: helm init --client-only --stable-repo-url https://charts.helm.sh/stable && jx promote -r jux-jx-charts --verbose --no-merge --env prod --timeout 24h --version \$(cat ../../VERSION)
-#          name: jx-promote-userservice-prod
+        - comment: promote to production Environment
+          sh: helm init --client-only --stable-repo-url https://charts.helm.sh/stable && jx promote -r jux-jx-charts --verbose --no-merge --env prod --timeout 24h --version \$(cat ../../VERSION)
+          name: jx-promote-userservice-prod
       - dir: charts/merchant-service
         steps:
         - sh: jx step changelog --version v\$(cat ../../VERSION)
@@ -71,7 +71,7 @@ pipelines:
         - comment: promote to development Environment
           sh: helm init --client-only --stable-repo-url https://charts.helm.sh/stable && jx promote -r jux-jx-charts --verbose --env development --timeout 1h --version \$(cat ../../VERSION)
           name: jx-promote-merchantservice-development
-#        - comment: promote to production Environment
-#          sh: helm init --client-only --stable-repo-url https://charts.helm.sh/stable && jx promote -r jux-jx-charts --verbose --no-merge --env prod --timeout 24h --version \$(cat ../../VERSION)
-#          name: jx-promote-merchantservice-prod
+        - comment: promote to production Environment
+          sh: helm init --client-only --stable-repo-url https://charts.helm.sh/stable && jx promote -r jux-jx-charts --verbose --no-merge --env prod --timeout 24h --version \$(cat ../../VERSION)
+          name: jx-promote-merchantservice-prod
 
